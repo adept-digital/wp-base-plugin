@@ -75,6 +75,28 @@ abstract class AbstractPlugin extends AbstractComponent implements PluginInterfa
     /**
      * @inheritDoc
      */
+    public function __invoke(): void
+    {
+        parent::__invoke();
+        add_action('plugins_loaded', [$this, 'doBoot']);
+    }
+
+    /**
+     * Triggers namespaced boot action.
+     *
+     * Passes `$this` as the first parameter to allow hooking into the
+     * plugin.
+     *
+     * @return void
+     */
+    public function doBoot(): void
+    {
+        do_action($this->getNamespace('boot'), $this);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getId(): string
     {
         return plugin_basename($this->getFile());
