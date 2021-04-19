@@ -5,7 +5,7 @@
  * Description:
  * Version:           1.0.0
  * Requires at least: 5.5
- * Requires PHP:      7.4
+ * Requires PHP:      7.3
  * Author:            Adept Digital
  * Author URI:        https://adeptdigital.com.au/
  * Text Domain:       my-test-plugin

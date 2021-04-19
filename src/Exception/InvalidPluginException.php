@@ -16,7 +16,7 @@ class InvalidPluginException extends RuntimeException
      *
      * @var string
      */
-    private string $pluginFile;
+    private $pluginFile;
 
     /**
      * Invalid Plugin Exception constructor.

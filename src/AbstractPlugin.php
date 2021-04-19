@@ -15,7 +15,7 @@ abstract class AbstractPlugin extends AbstractComponent implements PluginInterfa
      *
      * @var array
      */
-    private array $metaData;
+    private $metaData;
 
     /**
      * Plugin constructor
