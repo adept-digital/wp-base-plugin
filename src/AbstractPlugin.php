@@ -26,33 +26,6 @@ abstract class AbstractPlugin extends AbstractComponent implements PluginInterfa
     public function __construct(string $namespace, string $file)
     {
         parent::__construct($namespace, $file);
-
-        if (!$this->isValid()) {
-            throw new InvalidPluginException($file);
-        }
-    }
-
-    /**
-     * Check if the plugin is valid.
-     *
-     * @return bool
-     */
-    private function isValid(): bool
-    {
-        $pluginDir = wp_normalize_path(dirname($this->getFile()));
-        if (
-            wp_normalize_path(WP_PLUGIN_DIR) === $pluginDir ||
-            wp_normalize_path(WPMU_PLUGIN_DIR) === $pluginDir
-        ) {
-            return true;
-        }
-
-        $pluginRealPath = wp_normalize_path(dirname(realpath($this->getFile())));
-        if (in_array($pluginRealPath, $GLOBALS['wp_plugin_paths'])) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
