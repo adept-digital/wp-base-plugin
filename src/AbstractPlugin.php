@@ -27,45 +27,28 @@ abstract class AbstractPlugin extends AbstractComponent implements PluginInterfa
     {
         parent::__construct($namespace, $file);
 
-        if (!$this->isActive()) {
+        if (!$this->isValid()) {
             throw new InvalidPluginException($file);
         }
     }
 
     /**
-     * Check if the plugin is active.
+     * Check if the plugin is valid.
      *
      * @return bool
      */
-    private function isActive(): bool
+    private function isValid(): bool
     {
-        // Is must use plugin?
-        $pluginPath = wp_normalize_path(dirname($this->getFile()));
-        $wpmuPluginPath = wp_normalize_path(WPMU_PLUGIN_DIR);
-        if (str_starts_with($pluginPath, $wpmuPluginPath)) {
+        $pluginDir = wp_normalize_path(dirname($this->getFile()));
+        if (
+            wp_normalize_path(WP_PLUGIN_DIR) === $pluginDir ||
+            wp_normalize_path(WPMU_PLUGIN_DIR) === $pluginDir
+        ) {
             return true;
         }
 
-        // Is symlinked must use plugin?
         $pluginRealPath = wp_normalize_path(dirname(realpath($this->getFile())));
         if (in_array($pluginRealPath, $GLOBALS['wp_plugin_paths'])) {
-            return true;
-        }
-
-        // Is active plugin?
-        $plugin = $this->getId();
-        $activePlugins = (array)get_option('active_plugins', []);
-        if (in_array($plugin, $activePlugins, true)) {
-            return true;
-        }
-
-        if (!is_multisite()) {
-            return false;
-        }
-
-        // Is active network plugin?
-        $activeNetworkPlugins = (array)get_site_option('active_sitewide_plugins', []);
-        if (isset($activeNetworkPlugins[$plugin])) {
             return true;
         }
 
